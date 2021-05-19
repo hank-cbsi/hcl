@@ -1,10 +1,10 @@
 locals {
   policyRoot = "./resources/policies/"
   defaultTags = {
-      Environment = var.env,
-      BU       = "Sports",
-      Repository = ""
-    }
+    Environment = var.env,
+    BU          = "Sports",
+    Repository  = ""
+  }
 }
 
 variable "env" {

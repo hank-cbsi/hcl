@@ -14,7 +14,7 @@ locals {
 }
 
 variable "roles" {
-  type = list(string)
+  type    = list(string)
   default = ["mytestrole"]
 }
 

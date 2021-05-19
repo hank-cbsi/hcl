@@ -46,9 +46,9 @@ module "orgIam" {
   tempRolePolicyArn = var.tempRolePolicyArn
   accountAlias      = replace(module.account_creation.accountEmail, "@cbsinteractive.com", "")
   team              = var.team
-  applicationID      = "THISISATESTAPPICATION"
+  applicationID     = "THISISATESTAPPICATION"
   teamApplicationID = "THISISANOTHERTESTAPPLICATION"
-  
+
 }
 
 
