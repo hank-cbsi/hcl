@@ -19,13 +19,5 @@ locals {
 
 }
 
- data "aws_iam_policy_document" "roleTrust" {
-#    source_json = file("${path.root}/policies/${local.roleTrustPolicyFile}")
-    source_json = file(var.roleTrustPolicyFile)
- }
 
-data "aws_iam_policy_document" "rolePermissions" {
-    for_each = toset(var.rolePermissionsPolicyFiles)
-        source_json = file(each.key)
- }
 

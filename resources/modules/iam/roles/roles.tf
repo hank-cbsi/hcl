@@ -4,15 +4,27 @@ resource "aws_iam_role" "this" {
   assume_role_policy   = data.aws_iam_policy_document.roleTrust.json
 }
 ##
-# Create the role permissions policy
-# resource "aws_iam_policy" "this" {
-#   name = "${var.roleName}-permissions"
-#   policy = data.aws_iam_policy_document.role-permissions.json
-# }
-##
-# Attach the role's policy to the role
-# resource "aws_iam_role_policy_attachment" "this" {
-#   policy_arn = aws_iam_policy.sharedservices-devops-rolePermissionsPolicy.arn
-#   role       = aws_iam_role.this.name
-# }
 
+data "aws_iam_policy_document" "roleTrust" {
+  source_json = file(var.roleTrustPolicyFile)
+}
+
+resource "aws_iam_policy" "rolePermissions" {
+  count  = length(data.aws_iam_policy_document.rolePermissions)
+  name   = "${var.roleName}-permissions-${count.index}"
+  policy = data.aws_iam_policy_document.rolePermissions[count.index].json
+
+}
+
+# Attach the role's policy to the role
+resource "aws_iam_role_policy_attachment" "this" {
+  count      = length(aws_iam_policy.rolePermissions)
+  policy_arn = aws_iam_policy.rolePermissions[count.index].arn
+  role       = aws_iam_role.this.name
+}
+
+
+data "aws_iam_policy_document" "rolePermissions" {
+  count       = length(var.rolePermissionsPolicyFiles)
+  source_json = file(element(var.rolePermissionsPolicyFiles, count.index))
+}

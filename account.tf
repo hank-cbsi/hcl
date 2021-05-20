@@ -1,5 +1,5 @@
 ##############################################################################
-# Create the account
+# Creates an AWS account
 provider "aws" {
   alias   = "orgmaster"
   profile = "org-prod"
@@ -9,6 +9,7 @@ provider "aws" {
   }
 }
 ##
+
 module "account_creation" {
   source = "./resources/modules/account-creation/account"
   providers = {
@@ -20,7 +21,12 @@ module "account_creation" {
 }
 
 ##############################################################################
-# Create resources in the newly created account using a different provider
+# Creates 
+## A temporary role
+## A role policy
+## An account alias
+## 2 saml identity providers
+
 provider "aws" {
   alias = "orgToClient"
   # profile = "${var.team}-${var.env}"
