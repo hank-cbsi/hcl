@@ -54,6 +54,9 @@ module "orgIam" {
   team              = var.team
   applicationID     = "THISISATESTAPPICATION"
   teamApplicationID = "THISISANOTHERTESTAPPLICATION"
+  depends_on = [
+    module.account_creation
+  ]
 
 }
 
