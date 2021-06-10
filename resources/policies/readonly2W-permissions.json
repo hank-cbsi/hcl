@@ -1,0 +1,92 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AllowSavingsPlan",
+            "Effect": "Allow",
+            "Action": [
+                "savingsplans:Describe*",
+                "savingsplans:List*"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Action": [
+                "cloudformation:GetTemplate",
+                "dynamodb:GetItem",
+                "dynamodb:BatchGetItem",
+                "dynamodb:Query",
+                "dynamodb:Scan",
+                "ec2:GetConsoleOutput",
+                "ec2:GetConsoleScreenshot",
+                "ecr:BatchGetImage",
+                "ecr:GetAuthorizationToken",
+                "ecr:GetDownloadUrlForLayer",
+                "kinesis:Get*",
+                "lambda:GetFunction",
+                "logs:GetLogEvents",
+                "sdb:Select*",
+                "sqs:ReceiveMessage",
+                "s3:GetObject",
+                "codecommit:BatchGetCommits",
+                "codecommit:BatchDescribeMergeConflicts",
+                "codecommit:BatchGetPullRequests",
+                "codecommit:DescribeMergeConflicts",
+                "codecommit:DescribePullRequestEvents",
+                "codecommit:GetBlob",
+                "codecommit:GetBranch",
+                "codecommit:GetComment",
+                "codecommit:GetCommentsForComparedCommit",
+                "codecommit:GetCommentsForPullRequest",
+                "codecommit:GetCommit",
+                "codecommit:GetCommitHistory",
+                "codecommit:GetCommitsFromMergeBase",
+                "codecommit:GetDifferences",
+                "codecommit:GetFile",
+                "codecommit:GetFolder",
+                "codecommit:GetMergeCommit",
+                "codecommit:GetMergeOptions",
+                "codecommit:GetObjectIdentifier",
+                "codecommit:GetPullRequest",
+                "codecommit:GetPullRequestApprovalStates",
+                "codecommit:GetPullRequestOverrideState",
+                "codecommit:GetReferences",
+                "codecommit:GetRepositoryTriggers",
+                "codecommit:GetTree",
+                "codecommit:GetUploadArchiveStatus",
+                "codecommit:GitPull",
+                "codecommit:ListApprovalRuleTemplates",
+                "codecommit:ListAssociatedApprovalRuleTemplatesForRepository",
+                "codecommit:ListBranches",
+                "codecommit:ListPullRequests",
+                "codecommit:ListRepositoriesForApprovalRuleTemplate",
+                "codecommit:ListTagsForResource",
+                "codedeploy:GetDeploymentConfig",
+                "es:esHttp*",
+                "kms:Get*",
+                "lightsail:GetKey*",
+                "redshift:View*",
+                "s3:GetObject*",
+                "ssm:GetParameter*",
+                "workdocs:Get*",
+                "workmail:Get*"
+            ],
+            "Effect": "Deny",
+            "Resource": "*",
+            "Sid": "DenyDataAccess"
+        },
+        {
+            "Sid": "LimitAccessByDate",
+            "Effect": "Deny",
+            "Action": "*",
+            "Condition": {
+                "DateGreaterThanEquals": {
+                    "aws:CurrentTime": "2020-07-30T00:00:00Z"
+                }
+            },
+            "Resource": [
+                "*"
+            ]
+        }
+    ]
+}
