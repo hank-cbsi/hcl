@@ -10,4 +10,4 @@ accountTags = {
         Managedby = "Terraform"
 }
 
-roles = ["sharedservices-devops", "sharedservices-developer", "core-sre"]
+roles = ["sharedservices-devops", "sharedservices-developer", "core-sre", "core-secops" "readonly2w"]
