@@ -27,17 +27,8 @@ module "roles" {
   for_each                   = toset(var.roles)
   roleName                   = each.key
   roleTrustPolicyFile        = "${local.rolePolicyDir}/${each.key}-trust.json"
-  rolePermissionsPolicyFiles = ["${local.rolePolicyDir}/${each.key}-permissions.json"]
+  rolePermissionsPolicyFiles = "${local.rolePolicyDir}/${each.key}-permissions.json"
   depends_on = [
     module.orgIam.tempRoleName
   ]
 }
-# This is a test 
-# ## Create resources from the source module
-# module "roletest" {
-#   source                     = "./resources/modules/iam/roles/"
-#   for_each                   = var.rolestest
-#   roleName                   = each.value["roleName"]
-#   roleTrustPolicyFile        = "${local.rolePolicyDir}/${each.value["roleTrust"]}"
-#   rolePermissionsPolicyFiles = [for s in each.value["rolePermissions"] : join("/", [local.rolePolicyDir, s])]
-# }

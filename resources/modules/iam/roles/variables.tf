@@ -10,12 +10,12 @@ variable "roleSessionDuration" {
    
  }
   variable "rolePermissionsPolicyFiles" {
-   type = list(string)
+   type = string
  }
 
 locals {
   roleTrustPolicyFile = "${var.roleName}-trust.json"
-  rolePermissonsPolicyFiles = ["${var.roleName}-permissions.json"]
+  rolePermissonsPolicyFiles = "${var.roleName}-permissions.json"
 
 }
 
