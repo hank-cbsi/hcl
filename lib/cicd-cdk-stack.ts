@@ -1,8 +1,8 @@
 import * as cdk from '@aws-cdk/core';
 import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
-import { ServicePrincipal, Role, ManagedPolicy } from '@aws-cdk/aws-iam';
 import { Pipeline } from '@aws-cdk/aws-codepipeline';
 import { Artifact } from '@aws-cdk/aws-codepipeline';
+import { ServicePrincipal, Role, ManagedPolicy } from '@aws-cdk/aws-iam';
 import { BuildSpec, PipelineProject } from '@aws-cdk/aws-codebuild';
 
 export class CicdCdkStack extends cdk.Stack {
