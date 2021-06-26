@@ -21,6 +21,9 @@ export class CicdCdkStack extends cdk.Stack {
     const repoName: string = 'ops-nebula';
     const sourceOutputArtifact = new Artifact(sourceOutputArtifactName);
 
+    // define build related variables 
+    const buildspecFileName = 'lib/resources/buildspec.yml'
+
     //  define a role props and a role
     const pipelineRoleProps = {
       roleName: name + '-build',
@@ -28,8 +31,9 @@ export class CicdCdkStack extends cdk.Stack {
       description: 'Role ' + description,
       managedPolicies: [ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess')],
     };
-    const pipelineRole = new Role(this, 'PipelineRole', pipelineRoleProps)
+    const pipelineRole = new Role(this, 'NebulePipelineRole', pipelineRoleProps)
 
+    // define a source action propertie and source action objects
     const mySourceActionProps = {
       actionName: sourceActionName,
       connectionArn: sourceActionConnectionArn,
@@ -40,8 +44,7 @@ export class CicdCdkStack extends cdk.Stack {
     }
     const mySourceAction = new codepipeline_actions.CodeStarConnectionsSourceAction(mySourceActionProps);
 
-    const buildspecFileName = 'lib/resources/buildspec.yml'
-
+    // defina a build project properties and the build project for the codepipeline pipeline
     const myPipelineBuildProjectProps = {
       projectName: name,
       desctiption: 'Build project for ' + description,
