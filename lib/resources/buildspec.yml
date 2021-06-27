@@ -6,3 +6,9 @@ install:
 build:
   commands:
     - echo test
+    - npm run build
+    - npm run cdk synth -- -o dist
+artifacts:
+  base-directory: dist
+  files:
+    - BucketStack.template.json

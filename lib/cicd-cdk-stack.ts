@@ -1,9 +1,9 @@
 import * as cdk from '@aws-cdk/core';
 import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
-import { Pipeline } from '@aws-cdk/aws-codepipeline';
-import { Artifact } from '@aws-cdk/aws-codepipeline';
+import { Pipeline, Artifact} from '@aws-cdk/aws-codepipeline';
 import { ServicePrincipal, Role, ManagedPolicy } from '@aws-cdk/aws-iam';
 import { BuildSpec, PipelineProject } from '@aws-cdk/aws-codebuild';
+import { LambdaApplication, LambdaDeploymentGroup } from '@aws-cdk/aws-codedeploy';
 
 export class CicdCdkStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
@@ -26,7 +26,7 @@ export class CicdCdkStack extends cdk.Stack {
 
     //  define a role props and a role
     const pipelineRoleProps = {
-      roleName: name + '-build',
+      roleName: name + '-build1',
       assumedBy: new ServicePrincipal('codepipeline.amazonaws.com'),
       description: 'Role ' + description,
       managedPolicies: [ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess')],
@@ -52,17 +52,26 @@ export class CicdCdkStack extends cdk.Stack {
 
     };
     const myPipelineBuildProject = new PipelineProject(this, 'NebulaCodebuildProject', myPipelineBuildProjectProps);
-
+    const lambdaBuildOutput = new Artifact('LambdaBuildOutput');
     // defind my build action properties and build action
     const myBuildActionProps = {
       actionName: 'Build',
       input: sourceOutputArtifact,
       project: myPipelineBuildProject,
-      role: pipelineRole
+      role: pipelineRole,
+      outputs: [lambdaBuildOutput]
     }
     const myBuildAction = new codepipeline_actions.CodeBuildAction(myBuildActionProps);
-
-    //  Define codepipeline props and codepipeline pipeline
+ // ###############################################
+    const myDeployActionProps = {
+      actionName: 'DeployLambda',
+      adminPermissions: true,
+      stackName: 'LambdaStack',
+      templatePath: lambdaBuildOutput.atPath('BucketStack.template.json')
+    };
+    const myDeployAction = new codepipeline_actions.CloudFormationCreateUpdateStackAction(myDeployActionProps)
+ 
+ // ###############################################
     const nebulaPipelineProps = {
       pipelineName: name,
       role: pipelineRole,
@@ -74,7 +83,10 @@ export class CicdCdkStack extends cdk.Stack {
         {
           stageName: 'Build',
           actions: [myBuildAction]
-        }
+        },
+        {
+          stageName: 'Deploy',
+        actions: [myDeployAction]}
       ]
     }
     const nebulaPipeline = new Pipeline(this, 'nebulaPipeline', nebulaPipelineProps)
